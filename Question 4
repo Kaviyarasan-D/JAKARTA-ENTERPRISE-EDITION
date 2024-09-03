@@ -1,0 +1,74 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+class Employee {
+    private int empId;
+    private String empName;
+    private String empAddress;
+    private String empDesignation;
+    private String empDepartment;
+    private String empPhoneNo;
+    private double empBasicPay;
+    private double empHRA;
+    private double empDA;
+    private double empTA;
+    private double empSalary;
+    public Employee(int empId, String empName, String empAddress, String empDesignation,
+                    String empDepartment, String empPhoneNo, double empBasicPay) {
+        this.empId = empId;
+        this.empName = empName;
+        this.empAddress = empAddress;
+        this.empDesignation = empDesignation;
+        this.empDepartment = empDepartment;
+        this.empPhoneNo = empPhoneNo;
+        this.empBasicPay = empBasicPay;
+        calculateAllowancesAndSalary();
+    }
+    private void calculateAllowancesAndSalary() {
+        this.empHRA = empBasicPay * 0.10; 
+        this.empDA = empBasicPay * 0.02;  
+        this.empTA = empBasicPay * 0.02;  
+        this.empSalary = empBasicPay + empHRA + empDA + empTA; 
+}
+    public String getEmpDepartment() {
+        return empDepartment;
+    }
+    public double getEmpSalary() {
+        return empSalary;
+    }
+    public String getEmpName() {
+        return empName;
+    }
+    public int getEmpId() {
+        return empId;
+    }
+    @Override
+    public String toString() {
+        return "Employee ID: " + empId + ", Name: " + empName + ", Department: " + empDepartment +
+                ", Salary: " + empSalary;
+    }
+}
+public class EmployeeManagement {
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(101, "Alice", "123 Elm Street", "Manager", "HR", "1234567890", 50000));
+        employees.add(new Employee(102, "Bob", "456 Oak Street", "Developer", "IT", "0987654321", 60000));
+        employees.add(new Employee(103, "Charlie", "789 Pine Street", "Analyst", "Finance", "1112223333", 55000));
+        employees.add(new Employee(104, "David", "321 Maple Street", "Developer", "IT", "2223334444", 70000));
+        employees.add(new Employee(105, "Eve", "654 Cedar Street", "Manager", "HR", "3334445555", 65000));
+        employees.add(new Employee(106, "Frank", "987 Birch Street", "Clerk", "Finance", "4445556666", 40000));
+        Map<String, Employee> highestSalaryByDepartment = new HashMap<>();
+        for (Employee emp : employees) {
+            String department = emp.getEmpDepartment();
+            if (!highestSalaryByDepartment.containsKey(department) || emp.getEmpSalary() > highestSalaryByDepartment.get(department).getEmpSalary()) {
+                highestSalaryByDepartment.put(department, emp);
+            }
+        }
+        System.out.println("Employee with the highest salary in each department:");
+        for (Employee emp : highestSalaryByDepartment.values()) {
+            System.out.println(emp);
+        }
+    }
+}
